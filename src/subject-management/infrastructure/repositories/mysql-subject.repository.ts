@@ -21,7 +21,7 @@ export class MysqlSubjectRepository implements SubjectInterface {
 
     async getSubject(id: string): Promise<SubjectEntity | null> {
         try {
-            const subject = await SubjectModel.findOne({ where: { id } });
+            const subject = await this.findById(id);
             if (subject) {
                 return subject;
             }
@@ -33,17 +33,21 @@ export class MysqlSubjectRepository implements SubjectInterface {
     }
 
     async updateSubject(subject: SubjectEntity): Promise<SubjectEntity | null> {
-        const foundSubject = await SubjectModel.findOne({ where: { id: subject.id } });
-        console.log(foundSubject);
+        const foundSubject = await this.findById(subject.id);
         if (foundSubject !== null) {
-            const updatedSubject = SubjectModel.update(subject, { where: { id: subject.id } });
+            SubjectModel.update(subject, { where: { id: subject.id } });
             return subject;
         }
         return null;
     }
 
-    deleteSubject(id: string): Promise<boolean> {
-        throw new Error("Method not implemented.");
+    async deleteSubject(id: string): Promise<boolean> {
+        const foundSubject = await this.findById(id);
+        if (foundSubject !== null) {
+            SubjectModel.destroy({ where: { id: id } });
+            return true;
+        }
+        return false;
     }
 
     getSubjects(): Promise<SubjectEntity[]> {
