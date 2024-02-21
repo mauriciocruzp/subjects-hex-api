@@ -4,7 +4,7 @@ import signale from "signale";
 import SubjectModel from "../mysql/models/subject.model";
 
 export class MysqlSubjectRepository implements SubjectInterface {
-    async createSubject(subject: SubjectEntity): Promise<SubjectEntity | null > {
+    async createSubject(subject: SubjectEntity): Promise<SubjectEntity | null> {
         try {
             const savedUser = await SubjectModel.create({
                 id: subject.id,
@@ -15,13 +15,21 @@ export class MysqlSubjectRepository implements SubjectInterface {
             return savedUser;
         } catch (error) {
             signale.error(error);
-
             return null;
         }
     }
 
     async getSubject(id: string): Promise<SubjectEntity | null> {
-        throw new Error("Method not implemented.");
+        try {
+            const subject = await SubjectModel.findOne({ where: { id } });
+            if (subject) {
+                return subject;
+            }
+            return null;
+        } catch (error) {
+            signale.error(error);
+            return null;
+        }
     }
     updateSubject(subject: SubjectEntity): Promise<SubjectEntity | null> {
         throw new Error("Method not implemented.");

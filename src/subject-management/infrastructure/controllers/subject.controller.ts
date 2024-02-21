@@ -22,7 +22,7 @@ export class SubjectController {
         try {
             const subject = await this.getSubjectUseCase.execute(req.params.id);
             if (!subject) return res.status(404).json({ message: 'Subject not found' });
-            return res.status(200).json({ subject });
+            return res.status(200).json({ message: 'Subject found!', subject });
         } catch (error) {
             signale.error(error);
             return res.status(500).json({ message: 'Internal server error' });
