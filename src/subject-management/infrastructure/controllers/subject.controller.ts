@@ -1,11 +1,12 @@
 import { CreateSubjectUseCase } from "@src/subject-management/application/use-cases/create-subject.use-case";
 import { GetSubjectUseCase } from "@src/subject-management/application/use-cases/get-subject.use-case";
+import { UpdateSubjectUseCase } from "@src/subject-management/application/use-cases/update-subject.use-case";
 import { Request, Response } from "express";
 import signale from "signale";
 
 
 export class SubjectController {
-    constructor(readonly createSubjectUseCase: CreateSubjectUseCase, readonly getSubjectUseCase: GetSubjectUseCase) { }
+    constructor(readonly createSubjectUseCase: CreateSubjectUseCase, readonly getSubjectUseCase: GetSubjectUseCase, readonly updateSubjectUseCase: UpdateSubjectUseCase) { }
 
     async create(req: Request, res: Response) {
         try {
@@ -23,6 +24,17 @@ export class SubjectController {
             const subject = await this.getSubjectUseCase.execute(req.params.id);
             if (!subject) return res.status(404).json({ message: 'Subject not found' });
             return res.status(200).json({ message: 'Subject found!', subject });
+        } catch (error) {
+            signale.error(error);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+
+    async update(req: Request, res: Response) {
+        try {
+            const subject = await this.updateSubjectUseCase.execute(req.params.id, req.body.name, req.body.major, req.body.status);
+            if (!subject) return res.status(400).json({ message: 'Subject not updated' });
+            return res.status(200).json({ message: 'Subject updated successfully!', subject });
         } catch (error) {
             signale.error(error);
             return res.status(500).json({ message: 'Internal server error' });

@@ -5,3 +5,4 @@ export const subjectManagementRouter = express.Router();
 
 subjectManagementRouter.post('/', subjectController.create.bind(subjectController));
 subjectManagementRouter.get('/:id', subjectController.get.bind(subjectController));
+subjectManagementRouter.put('/:id', subjectController.update.bind(subjectController));

@@ -31,14 +31,30 @@ export class MysqlSubjectRepository implements SubjectInterface {
             return null;
         }
     }
-    updateSubject(subject: SubjectEntity): Promise<SubjectEntity | null> {
-        throw new Error("Method not implemented.");
+
+    async updateSubject(subject: SubjectEntity): Promise<SubjectEntity | null> {
+        const foundSubject = await SubjectModel.findOne({ where: { id: subject.id } });
+        console.log(foundSubject);
+        if (foundSubject !== null) {
+            const updatedSubject = SubjectModel.update(subject, { where: { id: subject.id } });
+            return subject;
+        }
+        return null;
     }
+
     deleteSubject(id: string): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
+
     getSubjects(): Promise<SubjectEntity[]> {
         throw new Error("Method not implemented.");
     }
 
+    async findById(id: string): Promise<SubjectEntity | null> {
+        const subject = SubjectModel.findOne({ where: { id } });
+        if (subject) {
+            return subject;
+        }
+        return null;
+    }
 }
