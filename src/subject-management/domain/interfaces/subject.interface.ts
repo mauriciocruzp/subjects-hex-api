@@ -5,5 +5,5 @@ export interface SubjectInterface {
     getSubject(id: string): Promise<SubjectEntity | null>;
     updateSubject(subject: SubjectEntity): Promise<SubjectEntity | null>;
     deleteSubject(id: string): Promise<boolean>;
-    getSubjects(): Promise<SubjectEntity[]>;
+    getSubjects(): Promise<SubjectEntity[] | null>;
 }

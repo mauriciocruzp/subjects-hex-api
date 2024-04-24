@@ -50,8 +50,12 @@ export class MysqlSubjectRepository implements SubjectInterface {
         return false;
     }
 
-    getSubjects(): Promise<SubjectEntity[]> {
-        throw new Error("Method not implemented.");
+    async getSubjects(): Promise<SubjectEntity[] | null> {
+        const subjects = await SubjectModel.findAll();
+        if (subjects) {
+            return subjects;
+        }
+        return null;
     }
 
     async findById(id: string): Promise<SubjectEntity | null> {
